@@ -4,6 +4,8 @@ package com.yqfk.pojo;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 public class Result {
@@ -18,4 +20,5 @@ public class Result {
         this.code = code;
         this.message = message;
     }
+
 }
