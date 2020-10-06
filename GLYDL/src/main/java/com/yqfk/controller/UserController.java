@@ -8,10 +8,11 @@ import javafx.geometry.Pos;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-@RestController
-//@Controller
+//@RestController
+@Controller
 //@ResponseBody将返回的对象转成json
 @RequestMapping("/user")
 public class UserController {
@@ -22,6 +23,7 @@ public class UserController {
     @Autowired
     private RedisTemplate redisTemplate;
 
+    @ResponseBody
     @RequestMapping(method = RequestMethod.GET)
     public Result findAll(){
         return new Result(true, StatusCode.OK, "查询成功", userService.findAll());
@@ -30,6 +32,7 @@ public class UserController {
     /**
      * 更新User
      */
+    @ResponseBody
     @RequestMapping(value = "/{userid}", method = RequestMethod.PUT)
     public Result update(@PathVariable("userid") String userid, @RequestBody User user){
         user.setUserid(userid);
@@ -40,6 +43,7 @@ public class UserController {
     /**
      * 增加user
      */
+    @ResponseBody
     @RequestMapping(method = RequestMethod.POST)
     public Result addUser(@RequestBody User user){
         userService.save(user);
@@ -55,6 +59,7 @@ public class UserController {
      * @RequestMapping映射路径
      * @ResponseBody将前端传过来的json数据转换位对象
      */
+    @ResponseBody
     @RequestMapping(value = "/login/{code}", method = RequestMethod.POST)
     public Result Login(@RequestBody User user, @PathVariable String code){
         String checkcode = (String) redisTemplate.opsForValue().get("checkcode_" + user.getPhone());
@@ -69,6 +74,7 @@ public class UserController {
     /**
      * 用户名密码登陆
      */
+    @ResponseBody
     @RequestMapping(value = "/loginbp", method = RequestMethod.POST)
     public Result loginByPassword(@RequestBody User user){
         user = userService.login(user.getUsername(),user.getPassword());
@@ -81,12 +87,20 @@ public class UserController {
     /**
      * 发送验证码
      */
+    @ResponseBody
     @RequestMapping(value = "/sendSms/{mobile}",method = RequestMethod.POST)
     public Result sendMsg(@PathVariable String mobile){
         userService.sendMsg(mobile);
         return new Result(true, StatusCode.OK, "发送成功");
     }
 
+    /**
+     * 界面跳转
+     */
+    @RequestMapping(value = "/index",method = RequestMethod.GET)
+    public String toindex(){
+        return "index";
+    }
 
 
 
