@@ -13,9 +13,13 @@ spring:
     show-sql: true
   redis:
     host: 120.27.216.13
+  rabbitmq:
+    host: 120.27.216.13
 aliyun:
   sms:
     accessKeyId: LTAI4G4LyM5SwtQBKjcijas2
     accessKeySecret: nanXZMVYbwiW26nWOHBPLeF25QpmhW
     sign_name: QST2020
     template_code: SMS_203717866
+
+
