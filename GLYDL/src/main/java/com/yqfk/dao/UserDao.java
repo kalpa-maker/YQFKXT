@@ -5,8 +5,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.Repository;
 
-public interface UserDao extends JpaRepository<User, String>, JpaSpecificationExecutor<User> {
+public interface UserDao  extends JpaRepository<User, String>, JpaSpecificationExecutor<User> , CrudRepository<User,String> {
 
     @Query(value = "select * from user where username = ?",nativeQuery = true)
     public User findByUsername(String username);
