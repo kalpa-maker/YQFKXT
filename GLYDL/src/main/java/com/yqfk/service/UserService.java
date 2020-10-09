@@ -5,6 +5,7 @@ import com.yqfk.dao.UserDao;
 import com.yqfk.pojo.User;
 import com.yqfk.util.SmsUtil;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.omg.CORBA.TIMEOUT;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -47,7 +48,11 @@ public class UserService {
         return userDao.findAll();
     }
 
-    public void sendMsg(String mobile) {
+    /**
+     * 发送手机验证码
+     * @param mobile
+     */
+        public void sendMsg(String mobile) {
         //生成随机六位数（lang3）
         String checkcode = RandomStringUtils.randomNumeric(6);
         //往缓存里面存一份
@@ -61,11 +66,35 @@ public class UserService {
     }
 
     /**
+     * 发送新闻链接
+     * @param mobile
+     */
+    public void sendNewsMsg(String mobile) {
+        //编辑要发送内容
+        String newsUrl = "www.xinwen.com";
+        //存入缓存
+        redisTemplate.opsForValue().set("newsUrl"+mobile,newsUrl,6,TimeUnit.HOURS);
+        try {
+
+            //给手机发一份
+            smsUtil.sendSms(mobile,template_code,sign_name,"{\"code\":\""+ newsUrl+"\"}");
+        }catch (ClientException e){
+            e.printStackTrace();
+        }
+
+
+
+    }
+
+    /**
      * save方法没有就存，有就更新
      * @param user
      */
     public void update(User user) {
         userDao.save(user);
+    }
+    public  void delete(String userid){
+        userDao.deleteById(userid);
     }
 
     public void save(User user) {

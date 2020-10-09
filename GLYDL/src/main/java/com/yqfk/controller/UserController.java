@@ -23,6 +23,11 @@ public class UserController {
     @Autowired
     private RedisTemplate redisTemplate;
 
+    /**
+     * 查找所有user
+     * @return
+     */
+
     @ResponseBody
     @RequestMapping(method = RequestMethod.GET)
     public Result findAll(){
@@ -49,7 +54,16 @@ public class UserController {
         userService.save(user);
         return new Result(true, StatusCode.OK, "添加成功");
     }
-
+    /**
+     * 删除用户
+     */
+    @ResponseBody
+    @RequestMapping(value = "/{userid}",method = RequestMethod.DELETE)
+    public  Result deleteUser(@PathVariable("userid") String userid,@RequestBody User user){
+        user.setUserid(userid);
+        userService.delete(userid);
+        return new Result(true,StatusCode.OK,"删除成功");
+    }
 
 
 
@@ -60,8 +74,8 @@ public class UserController {
      * @ResponseBody将前端传过来的json数据转换位对象
      */
     @ResponseBody
-    @RequestMapping(value = "/login/{code}", method = RequestMethod.POST)
-    public Result Login(@RequestBody User user, @PathVariable String code){
+    @RequestMapping(value = "/userlogin/{code}", method = RequestMethod.POST)
+    public Result Login(@RequestBody User user,@PathVariable String code){
         String checkcode = (String) redisTemplate.opsForValue().get("checkcode_" + user.getPhone());
         if (StringUtils.isEmpty(checkcode)){
             return new Result(false, StatusCode.ERROR, "请先获取验证码");
@@ -95,12 +109,23 @@ public class UserController {
     }
 
     /**
+     *
+     * 发送新闻链接
+     */
+    @ResponseBody
+    @RequestMapping(value = "/sendSms1/{mobile}",method = RequestMethod.POST)
+    public Result sendNewsMsg(@PathVariable String moblie){
+        userService.sendNewsMsg(moblie);
+        return new Result(true,StatusCode.OK,"发送成功");
+    }
+
+    /**
      * 界面跳转
      */
-    @RequestMapping(value = "/index",method = RequestMethod.GET)
-    public String toindex(){
-        return "index";
-    }
+    /*@RequestMapping(value = "/userlogin",method = RequestMethod.GET)
+    public String touserlogin(){
+        return "userlogin";
+    }*/
 
 
 

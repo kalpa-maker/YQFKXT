@@ -13,10 +13,13 @@ import javax.persistence.Table;
 public class Admin {
 
     @Id
-    private String userid;
+    private String adminid;
 
     private String loginname;
 
     private String password;
+
+    private String phone;
+
 
 }
