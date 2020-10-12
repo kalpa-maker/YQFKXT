@@ -15,6 +15,7 @@ import org.apache.commons.lang3.StringUtils;
 //@ResponseBody将返回的对象转成json
 @RequestMapping("/admin")
 public class AdminController {
+
     @Autowired
     private  AdminService adminService;
 

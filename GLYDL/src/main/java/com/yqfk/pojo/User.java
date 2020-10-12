@@ -5,6 +5,7 @@ import lombok.Data;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.util.Date;
 
 @Entity
 @Table(name = "user")
@@ -21,5 +22,7 @@ public class User {
     private String phone;
 
     private String roleid;
+
+    private Date createtime;
 
 }

@@ -4,15 +4,15 @@ import com.yqfk.pojo.Result;
 import com.yqfk.pojo.StatusCode;
 import com.yqfk.pojo.User;
 import com.yqfk.service.UserService;
-import javafx.geometry.Pos;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-//@RestController
-@Controller
+@RestController
+//@Controller
 //@ResponseBody将返回的对象转成json
 @RequestMapping("/user")
 public class UserController {
@@ -23,6 +23,9 @@ public class UserController {
     @Autowired
     private RedisTemplate redisTemplate;
 
+    @Autowired
+    private BCryptPasswordEncoder encoder;
+
     /**
      * 查找所有user
      * @return
@@ -30,6 +33,7 @@ public class UserController {
 
     @ResponseBody
     @RequestMapping(method = RequestMethod.GET)
+
     public Result findAll(){
         return new Result(true, StatusCode.OK, "查询成功", userService.findAll());
     }
